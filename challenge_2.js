@@ -2,28 +2,30 @@
 fs = require('fs').promises
 
 function safelyIncreasing(report){
+  let flag;
    reportInt = report.split(" ").map((num)=>{
         parseInt(num,10)
     })
     for(let i=0; i< (reportInt.length)-1 ; i++){
         if(reportInt[i]< reportInt[i+1]){
-            return true;
+            flag = true;
         }
         else{
-            return false;
+            flag = false;
         }
     }
 }
 
 function safelyDecreasing(report) {
+  let flag;
   reportInt = report.split(" ").map((num) => {
     parseInt(num, 10);
   });
   for (let i = 0; i < (reportInt.length)-1; i++) {
     if (reportInt[i] > reportInt[i + 1]) {
-      return true;
+      flag=true;
     } else {
-      return false;
+      flag = false;
     }
   }
 }
