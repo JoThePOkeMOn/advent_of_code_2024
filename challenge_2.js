@@ -1,62 +1,56 @@
+const fs = require("fs").promises;
 
-fs = require('fs').promises
-
-function safelyIncreasing(report){
-  let flag;
-   reportInt = report.split(" ").map((num)=>{
-        parseInt(num,10)
-    })
-    for(let i=0; i< (reportInt.length)-1 ; i++){
-        if(reportInt[i]< reportInt[i+1]){
-            flag = true;
-        }
-        else{
-            flag = false;
-        }
+function safelyIncreasing(report) {
+  const reportInt = report
+    .trim()
+    .split(" ")
+    .map((num) => parseInt(num, 10));
+  for (let i = 0; i < reportInt.length - 1; i++) {
+    if (reportInt[i] >= reportInt[i + 1]) {
+      return false;
     }
+    const diff =Math.abs(reportInt[i]-reportInt[i+1]);
+    if(diff > 3){
+      return false
+    }
+  }
+  return true;
 }
 
 function safelyDecreasing(report) {
-  let flag;
-  reportInt = report.split(" ").map((num) => {
-    parseInt(num, 10);
-  });
-  for (let i = 0; i < (reportInt.length)-1; i++) {
-    if (reportInt[i] > reportInt[i + 1]) {
-      flag=true;
-    } else {
-      flag = false;
+  const reportInt = report
+    .trim()
+    .split(" ")
+    .map((num) => parseInt(num, 10));
+  for (let i = 0; i < reportInt.length - 1; i++) {
+    if (reportInt[i] <= reportInt[i + 1]) {
+      return false;
+    }
+    const diff = Math.abs(reportInt[i] - reportInt[i+1]);
+    if (diff > 3) {
+      return false;
     }
   }
+  return true;
 }
 
 let Safe = 0;
 
-async function readingFile(){
-    try {
-        const data = await fs.readFile("input2.txt","utf8")
-        // console.log(data);
+async function readingFile() {
+  try {
+    const data = await fs.readFile("input2.txt", "utf8");
+    let reports = data.split("\n").filter((line) => line.trim().length > 0);
 
-        //parsing through each line
-        let i;
-        let reports = data.split('\n');
-        // console.log(reports[0]);
-        
-        reports.map((report)=>{
-            for(i = 0;i<report.length; i++){
-                if (safelyIncreasing(report)||safelyDecreasing(report)){
-                    Safe++;
-                }
-            }
-        })
-        
-        console.log(Safe)
+    reports.forEach((report) => {
+      if (safelyIncreasing(report) || safelyDecreasing(report)) {
+        Safe++;
+      }
+    });
 
-        
-    } catch (error) {
-        console.log(error);
-        
-    }    
+    console.log(Safe);
+  } catch (error) {
+    console.log(error);
+  }
 }
 
-readingFile()
+readingFile();
